@@ -1,6 +1,6 @@
-# menance
+# Menace KI
 
-Menace KI
+Basic helper app for the menace tic tac toe ki to find the box number for the current deck state.
 
 ## Getting Started
 
