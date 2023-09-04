@@ -89,13 +89,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.menance" "\0"
-            VALUE "FileDescription", "menance" "\0"
+            VALUE "CompanyName", "com.menaceki" "\0"
+            VALUE "FileDescription", "menaceki" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "menance" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2023 com.menance. All rights reserved." "\0"
-            VALUE "OriginalFilename", "menance.exe" "\0"
-            VALUE "ProductName", "menance" "\0"
+            VALUE "InternalName", "Menace KI" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2023 com.menaceki. All rights reserved." "\0"
+            VALUE "OriginalFilename", "menaceki.exe" "\0"
+            VALUE "ProductName", "Menace KI" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

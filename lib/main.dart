@@ -42,6 +42,7 @@ class _MenaceState extends State<Menace> {
   List<List<String>> _currentAiList = menace1Moves;
   int _box = 0;
   String _currentPlayer = 'X';
+  String _winner = '';
 
   _nestList(list) {
     List<List<String>> nested = [];
@@ -91,12 +92,15 @@ class _MenaceState extends State<Menace> {
     });
 
     _reset();
+    _winner = _checkWinner();
   }
 
   getColor() {
     var color;
 
-    if((_currentAi == 'menace1' && _box == 1) || (_currentAi == 'menace2' && _box >= 1 && _box <= 3)) {
+    if(_winner != '') {
+      color = Colors.grey;
+    } else if((_currentAi == 'menace1' && _box == 1) || (_currentAi == 'menace2' && _box >= 1 && _box <= 3)) {
       color = Colors.greenAccent.shade400;
     } else if((_currentAi == 'menace1' && _box >= 2 && _box <= 13) || (_currentAi == 'menace2' && _box >= 4 && _box <= 41)) {
       color = Colors.pink;
@@ -112,19 +116,22 @@ class _MenaceState extends State<Menace> {
   }
 
   _play(int index) {
-    late String field = _currentPlayer;
-    late String next = _currentPlayer == 'X' ? 'O' : 'X';
+    if(_winner == '') {
+      late String field = _currentPlayer;
+      late String next = _currentPlayer == 'X' ? 'O' : 'X';
 
-    if(_board[index] != '') {
-      field = '';
+      if(_board[index] != '') {
+        field = '';
+      }
+
+      setState(() {
+        _board[index] = field;
+        _currentPlayer = next;
+      });
+
+      _check();
+      _checkWinner();
     }
-
-    setState(() {
-      _board[index] = field;
-      _currentPlayer = next;
-    });
-
-    _check();
   }
 
   _check() {
@@ -142,7 +149,7 @@ class _MenaceState extends State<Menace> {
       else if(p == 7) { nested = _rotate(nested); }
       board = _flatList(nested);
 
-      for (var i = 0; i < _currentAiList.length; i++) {
+      for (int i = 0; i < _currentAiList.length; i++) {
         if(listEquals(board, _currentAiList[i]) == true) {
           boxNum = i + 1;
 
@@ -157,10 +164,43 @@ class _MenaceState extends State<Menace> {
     }
   }
 
+  _checkWinner() {
+    String winner = '';
+
+    for(int i = 0; i < 9; i += 3) {
+      if(_board[i] != '' && _board[i] == _board[i + 1] && _board[i + 1] == _board[i + 2]) {
+        winner = _board[i];
+      }
+    }
+
+    for(int i = 0; i < 3; i++) {
+      if(_board[i] != '' && _board[i] == _board[i + 3] && _board[i + 3] == _board[i + 6]) {
+        winner = _board[i];
+      }
+    }
+
+    if(_board[0] != '' && _board[0] == _board[4] && _board[4] == _board[8]) {
+      winner = _board[0];
+    }
+
+    if(_board[2] != '' && _board[2] == _board[4] && _board[4] == _board[6]) {
+      winner = _board[2];
+    }
+
+    print(winner);
+
+    if(winner == 'X') {
+      _winner = 'KI';
+    } else if(winner == 'O') {
+      _winner = 'Mensch';
+    }
+  }
+
   _reset() {
     setState(() {
       _board = List.filled(9, '');
       _currentPlayer = _currentAi == 'menace1' ? 'X' : 'O';
+      _winner = '';
       _box = 0;
     });
 
@@ -223,7 +263,7 @@ class _MenaceState extends State<Menace> {
                     ),
                     child: Center(
                         child: Text(
-                          'Box $_box',
+                          _winner == '' ? 'Box $_box' : '$_winner gewinnt',
                           style: const TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
