@@ -92,7 +92,7 @@ class _MenaceState extends State<Menace> {
     });
 
     _reset();
-    _winner = _checkWinner();
+    _checkWinner();
   }
 
   getColor() {
@@ -187,12 +187,32 @@ class _MenaceState extends State<Menace> {
       winner = _board[2];
     }
 
-    print(winner);
-
     if(winner == 'X') {
-      _winner = 'KI';
+      _winner = 'KI gewinnt';
     } else if(winner == 'O') {
-      _winner = 'Mensch';
+      _winner = 'Mensch gewinnt';
+    } else if(
+      !_board.contains('') ||
+      (_checkRowIsDraw(_board[0], _board[1], _board[2]) &&
+      _checkRowIsDraw(_board[3], _board[4], _board[5]) &&
+      _checkRowIsDraw(_board[6], _board[7], _board[8]) &&
+      _checkRowIsDraw(_board[0], _board[3], _board[6]) &&
+      _checkRowIsDraw(_board[1], _board[4], _board[7]) &&
+      _checkRowIsDraw(_board[2], _board[5], _board[8]) &&
+      _checkRowIsDraw(_board[0], _board[4], _board[8]) &&
+      _checkRowIsDraw(_board[2], _board[4], _board[6]))
+    ) {
+      _winner = 'Unentschieden';
+    }
+  }
+
+  _checkRowIsDraw(fieldOne, fieldTwo, fieldThree) {
+    if ((fieldOne != '' && fieldTwo != '' && fieldOne != fieldTwo) ||
+        (fieldOne != '' && fieldThree != '' && fieldOne != fieldThree) ||
+        (fieldTwo != '' && fieldThree != '' && fieldTwo != fieldThree)) {
+      return true;
+    } else {
+      return false;
     }
   }
 
@@ -263,7 +283,7 @@ class _MenaceState extends State<Menace> {
                     ),
                     child: Center(
                         child: Text(
-                          _winner == '' ? 'Box $_box' : '$_winner gewinnt',
+                          _winner == '' ? 'Box $_box' : _winner,
                           style: const TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
